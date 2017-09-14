@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		#box{
+			width: 520px;
+			height: 280px;
+			margin: 100px auto;
+			position: relative;
+			overflow: hidden;
+		}
+		#banner{
+			width: 2080px;
+			height: 280px;
+			float: left;
+			position: absolute;
+			left: 0;
+		}
+		#banner img{
+			float: left;
+		}
+		#ul{
+			/*width: 100px;
+			height: 18px;
+			border-radius: 10px;
+			opacity: 0.5;透明度
+			background-color: rgba(122,22,25,0.5);*/
+			list-style: none;
+			overflow: hidden;
+			position: absolute;
+			bottom: 20px;
+			left: 180px;
+
+		}
+		#ul li{
+			float: left;
+			width: 15px;
+			height: 15px;
+			margin-top: 1px;
+			border-radius: 10px;
+			background-color: #fff;
+			margin-left: 10px;
+		}
+		#ul .one{
+			background-color: red;
+		}
+		#next{
+			width: 24px;
+			height: 48px;
+			background-color: rgba(127,127,127,0.3);
+			color: white;
+			text-align: center;
+			line-height: 48px;
+			font-size: 8px;
+			border: 0;
+			outline: none;
+			position: absolute;
+			right: 0;
+			top: 116px;
+		}
+		#prev{
+			width: 24px;
+			height: 48px;
+			background-color: rgba(127,127,127,0.6);
+			color: white;
+			text-align: center;
+			line-height: 48px;
+			font-size: 8px;
+			border: 0;
+			outline: none;
+			position: absolute;
+			left: 0;
+			top: 116px;
+		}
+	</style>
+	<script type="text/javascript">
+		window.onload=function(){
+			function $(id){
+				return document.getElementById(id);
+			}
+			var box = $("box");
+			var banner = $("banner");
+			var ul = $("ul");
+			var lis = ul.children;
+			var next = $("next");
+			var prev = $("prev");
+			var click =0;
+			var current=0;
+			// 当前盒子的left值
+			var target = 0;
+			// 盒子需要移动的left的目标值
+			next.onclick=function(){
+				//+-决定图片移动的方向
+				target-=520;
+				//封装完只需要考虑target值 也就是图片的宽度
+				scrollimg();
+			}
+			prev.onclick=function(){
+				target+=520;
+				//封装完只需要考虑target值 也就是图片的宽度
+				scrollimg();
+			}
+			function scrollimg(){
+				var timer = setInterval(function(){
+					var step = current>target?-1:1;
+					current+=step;
+					banner.style.left = current+"px";
+					if (step == 1) {
+						if (current>=target) {
+						clearInterval(timer);
+					}
+				}else{
+					if (current<=target) {
+						clearInterval(timer);
+					}
+				}
+				}, 1);
+			}
+			//排他思想设置指示器
+			for (var i = 0; i < lis.length; i++) {
+				lis[i].onclick=function(){
+					for (var i = 0; i < lis.length; i++) {
+						lis[i].index=i;
+						lis[i].style.backgroundColor="white";
+					}
+					this.style.backgroundColor="red";
+					target = -520*this.index;
+					//target的值: 负(-)的图片的宽度*li的下标
+					scrollimg();
+				}
+			};
+		}
+	</script>
+</head>
+<body>
+	<div id="box">
+		<div id="banner">
+			<img src="images/1.jpg" alt="" />
+			<img src="images/2.jpg" alt="" />
+			<img src="images/3.jpg" alt="" />
+			<img src="images/4.jpg" alt="" />
+		</div>
+		<ul id="ul">
+			<li class="one"></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+		<input type="button" value=">" id="next" />
+		<input type="button" value="<" id="prev" />
+	</div>
+</body>
+</html>
